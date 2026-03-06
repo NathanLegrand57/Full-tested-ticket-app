@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    /* Palette FNAC */
+    .bg-fnac-red {
+        background-color: #dc2626;
+    }
+
+    .text-fnac-red {
+        color: #dc2626;
+    }
+
+    .border-fnac-red {
+        border-color: #dc2626;
+    }
+
+    .bg-fnac-dark {
+        background-color: #111827;
+    }
+
+    .text-fnac-dark {
+        color: #111827;
+    }
+
+    .bg-fnac-gray {
+        background-color: #f9fafb;
+    }
+
+    .btn-fnac-primary {
+        @apply inline-flex items-center justify-center px-5 py-2.5 rounded-full font-semibold shadow-md transition transform;
+        background-color: #dc2626;
+        color: #ffffff;
+    }
+
+    .btn-fnac-primary:hover {
+        transform: translateY(-1px) scale(1.02);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-fnac-secondary {
+        @apply inline-flex items-center justify-center px-4 py-2 rounded-full font-semibold border transition;
+        border-color: #111827;
+        color: #111827;
+        background-color: #ffffff;
+    }
+
+    .btn-fnac-secondary:hover {
+        background-color: #f3f4f6;
+    }
+
+    .card-fnac {
+        @apply bg-white rounded-xl shadow-md border border-gray-200 transition transform;
+    }
+
+    .card-fnac:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Badge rond (stock, tags) */
+    .badge-fnac-round {
+        @apply inline-flex items-center justify-center rounded-full text-xs font-bold px-3 py-1;
+        background-color: #dc2626;
+        color: #ffffff;
+    }
+}
