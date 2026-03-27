@@ -1,4 +1,4 @@
-# Show Booking System - Laravel 10.10
+# Show Booking System - Laravel 13.2.0
 
 Système de réservation de spectacles développé avec Laravel.
 
@@ -58,10 +58,15 @@ L'application sera accessible sur : **http://localhost:8000**
 ```bash
 php artisan tinker
 
-# On crée le rôle admin avec 3 permissions pour créer, supprimer et modifier
-Bouncer::allow('admin')->to('show-create');
-Bouncer::allow('admin')->to('show-delete');
-Bouncer::allow('admin')->to('show-edit');
+# Créer les permissions
+Spatie\Permission\Models\Permission::findOrCreate('show-create');
+Spatie\Permission\Models\Permission::findOrCreate('show-edit');
+Spatie\Permission\Models\Permission::findOrCreate('show-delete');
+Spatie\Permission\Models\Permission::findOrCreate('admin-stats');
+
+# Créer le rôle admin et lui donner les permissions
+$adminRole = Spatie\Permission\Models\Role::findOrCreate('admin');
+$adminRole->givePermissionTo(['show-create', 'show-edit', 'show-delete', 'admin-stats']);
 
 # On crée le user
 User::create(["firstname"=>"admin","lastname"=>"billetterie","email"=>"admin@billetterie.com","password"=>bcrypt("Not24get"),"phone_number"=>"0707070707"]);
@@ -71,23 +76,22 @@ $user = \App\Models\User::find(id_du_user);
 
 # On vérifie que c'est le bon user qui est utilisé
 $user
-Bouncer::assign('admin')->to($user);
 
-# On vérifie les rôles attribués au user ainsi que ses permissions
-$user->getRoles();
-$user->getAbilities();
+# On assigne le rôle admin (permissions incluses)
+$user->assignRole('admin');
 
-# On s'assure de sauvegarder
-Bouncer::refresh()
+# Vérification rapide
+$user->hasRole('admin');
+$user->can('admin-stats');
 ```
 
 ## Nouvelles fonctionnalités implémentées
 
 - **Statistiques ventes admin**
-    - Route protégée `GET /admin/stats` (middleware `auth` + permission Bouncer `admin-stats` ou `show-create`).
-    - Affichage du total de billets vendus, du chiffre d'affaires total, du top 3 spectacles par CA,
-      des réservations par jour et des places restantes par spectacle.
-    - Vue `admin/stats.blade.php` avec tableaux et graphique Chart.js.
+    - Route protégée `GET /admin/stats` (middleware `auth` + permission `admin-stats` ou `show-create`).
+        - Affichage du total de billets vendus, du chiffre d'affaires total, du top 3 spectacles par CA,
+          des réservations par jour et des places restantes par spectacle.
+        - Vue `admin/stats.blade.php` avec tableaux et graphique Chart.js.
 
 - **Gestion d'images des spectacles**
     - Colonne `image` et `places_disponibles` sur le modèle `Show`.

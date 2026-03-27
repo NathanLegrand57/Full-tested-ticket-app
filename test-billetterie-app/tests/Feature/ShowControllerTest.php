@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
 class ShowControllerTest extends TestCase
@@ -66,7 +67,8 @@ class ShowControllerTest extends TestCase
         Storage::fake('public');
 
         $admin = User::factory()->create();
-        $admin->allow('show-create');
+        Permission::findOrCreate('show-create', 'web');
+        $admin->givePermissionTo('show-create');
 
         $image = UploadedFile::fake()->image(name: 'show.jpg');
 
@@ -102,7 +104,8 @@ class ShowControllerTest extends TestCase
     public function test_authorized_user_can_update_show(): void
     {
         $admin = User::factory()->create();
-        $admin->allow('show-edit');
+        Permission::findOrCreate('show-edit', 'web');
+        $admin->givePermissionTo('show-edit');
 
         $show = Show::factory()->create();
 
@@ -144,7 +147,8 @@ class ShowControllerTest extends TestCase
     public function test_authorized_user_can_delete_show(): void
     {
         $admin = User::factory()->create();
-        $admin->allow('show-delete');
+        Permission::findOrCreate('show-delete', 'web');
+        $admin->givePermissionTo('show-delete');
 
         $show = Show::factory()->create();
 
