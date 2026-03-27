@@ -49,3 +49,5 @@ function something()
 {
     // ..
 }
+
+require_once __DIR__ . '/Browser/Support/auth.php';
