@@ -22,7 +22,7 @@ class ReservationControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('reservations.history'));
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertViewHas('reservations');
         $response->assertSee($reservation->show->title);
     }
@@ -37,7 +37,7 @@ class ReservationControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('reservations.show', $reservation));
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertViewHas('reservation');
         $this->assertEquals($reservation->id, $response->viewData('reservation')->id);
     }
@@ -53,7 +53,7 @@ class ReservationControllerTest extends TestCase
 
         $response = $this->actingAs($user2)->get(route('reservations.show', $reservation));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     /**
@@ -81,7 +81,7 @@ class ReservationControllerTest extends TestCase
 
         $response = $this->actingAs($user2)->delete(route('reservations.destroy', $reservation));
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
         $this->assertDatabaseHas('reservations', ['id' => $reservation->id, 'deleted_at' => null]);
     }
 }

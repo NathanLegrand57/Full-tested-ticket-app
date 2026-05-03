@@ -24,7 +24,7 @@ class ShowControllerTest extends TestCase
 
         $response = $this->get(route('shows.index'));
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertViewHas('shows');
         $response->assertSee('Concert de Rock');
         $response->assertSee('Pièce de Théâtre');
@@ -40,7 +40,7 @@ class ShowControllerTest extends TestCase
 
         $response = $this->get(route('shows.index', ['search' => 'Rock']));
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertSee('Concert de Rock');
         $response->assertDontSee('Pièce de Théâtre');
     }
@@ -54,7 +54,7 @@ class ShowControllerTest extends TestCase
 
         $response = $this->get(route('shows.show', $show));
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertViewHas('show');
         $response->assertSee($show->title);
     }
@@ -95,7 +95,7 @@ class ShowControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('shows.create'));
 
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
     }
 
     /**
@@ -137,7 +137,7 @@ class ShowControllerTest extends TestCase
             'price' => 40.00,
         ]);
 
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
         $this->assertDatabaseHas('shows', ['id' => $show->id, 'title' => 'Original Title']);
     }
 
@@ -168,7 +168,7 @@ class ShowControllerTest extends TestCase
 
         $response = $this->actingAs($user)->delete(route('shows.destroy', $show));
 
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
         $this->assertDatabaseHas('shows', ['id' => $show->id, 'deleted_at' => null]);
     }
 }
