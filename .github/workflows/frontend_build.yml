@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.4'
           coverage: xdebug
       - uses: actions/checkout@v4
         with:
@@ -52,3 +52,9 @@ jobs:
         run: |
           mkdir -p build/logs
           php artisan test --coverage-clover build/logs/clover.xml --log-junit build/logs/junit.xml
+      - name: Execute end-to-end tests (Pest Browser)
+        working-directory: test-billetterie-app
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        run: ./vendor/bin/pest tests/Browser
