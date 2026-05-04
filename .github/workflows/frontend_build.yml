@@ -22,7 +22,7 @@ jobs:
         run: cp .env.example .env
       - name: Install Dependencies
         working-directory: test-billetterie-app
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        run: composer update -q --no-ansi --no-interaction --no-scripts --no-progress
       - name: Create Database
         working-directory: test-billetterie-app
         run: |
