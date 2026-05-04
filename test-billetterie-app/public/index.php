@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+require __DIR__.'/../app/Support/mbstring.php';
+
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance
