@@ -41,6 +41,9 @@ jobs:
       - name: Install NPM dependencies
         working-directory: test-billetterie-app
         run: npm ci
+      - name: Install Playwright Browsers
+        working-directory: test-billetterie-app
+        run: npx playwright install --with-deps
       - name: Build Assets (Vite)
         working-directory: test-billetterie-app
         run: npm run build
@@ -49,6 +52,7 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
+          PAYMENT_SERVICE_JWT_SECRET: test_secret
         run: |
           mkdir -p build/logs
           php artisan test --coverage-clover build/logs/clover.xml --log-junit build/logs/junit.xml
@@ -57,4 +61,5 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
+          PAYMENT_SERVICE_JWT_SECRET: test_secret
         run: ./vendor/bin/pest tests/Browser
