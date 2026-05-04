@@ -1,4 +1,4 @@
-name: Build
+name: Frontend Build
 
 on:
   push:
@@ -18,26 +18,34 @@ jobs:
         with:
           fetch-depth: 0
       - name: Copy .env
+        working-directory: test-billetterie-app
         run: cp .env.example .env
       - name: Install Dependencies
+        working-directory: test-billetterie-app
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Create Database
+        working-directory: test-billetterie-app
         run: |
           mkdir -p database
           touch database/database.sqlite
       - name: Generate key
+        working-directory: test-billetterie-app
         run: php artisan key:generate
       - name: Directory Permissions
+        working-directory: test-billetterie-app
         run: chmod -R 777 storage bootstrap/cache
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
       - name: Install NPM dependencies
+        working-directory: test-billetterie-app
         run: npm install
       - name: Build Assets (Vite)
+        working-directory: test-billetterie-app
         run: npm run build
       - name: Execute tests (Unit and Feature tests) via PHPUnit
+        working-directory: test-billetterie-app
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
